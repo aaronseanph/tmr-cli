@@ -24,7 +24,7 @@ async function runCheckNewSlots() {
   console.log(`[${startTime}] Starting check-new-slots...`);
 
   try {
-    await execa('./tmr', ['app:check-new-slots'], {
+    await execa('php', ['tmr', 'app:check-new-slots'], {
       cwd: repoRoot,
       stdio: 'inherit'
     });

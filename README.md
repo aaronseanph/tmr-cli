@@ -28,7 +28,7 @@ Laravel Zero was created by [Nuno Maduro](https://github.com/nunomaduro) and [Ow
 
 ## Node.js Cron Runner
 
-This project includes a Node.js wrapper that uses `node-cron` to automatically run `./tmr app:check-new-slots` every hour. The runner executes the command immediately on startup and then schedules it to run at the top of every hour.
+This project includes a Node.js wrapper that uses `node-cron` to automatically run `php tmr app:check-new-slots` every hour. The runner executes the command immediately on startup and then schedules it to run at the top of every hour.
 
 ### Installation
 
