@@ -10,7 +10,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "execa": "^8.0.1",
     "node-cron": "^3.0.3"
   }
 }

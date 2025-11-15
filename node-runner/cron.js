@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const execa = require('execa');
+const { spawn } = require('child_process');
 const path = require('path');
 
 // Resolve the repository root (parent directory of node-runner)
@@ -23,20 +23,34 @@ async function runCheckNewSlots() {
   
   console.log(`[${startTime}] Starting check-new-slots...`);
 
-  try {
-    await execa('php', ['tmr', 'app:check-new-slots'], {
+  return new Promise((resolve, reject) => {
+    const phpProcess = spawn('php', ['tmr', 'app:check-new-slots'], {
       cwd: repoRoot,
-      stdio: 'inherit'
+      stdio: 'inherit',
+      shell: process.platform === 'win32' // Use shell on Windows for better compatibility
     });
-    
-    const endTime = new Date().toISOString();
-    console.log(`[${endTime}] Successfully completed check-new-slots`);
-  } catch (error) {
-    const endTime = new Date().toISOString();
-    console.error(`[${endTime}] Error running check-new-slots:`, error.message);
-  } finally {
-    isRunning = false;
-  }
+
+    phpProcess.on('close', (code) => {
+      const endTime = new Date().toISOString();
+      
+      if (code === 0) {
+        console.log(`[${endTime}] Successfully completed check-new-slots`);
+        resolve();
+      } else {
+        console.error(`[${endTime}] Error running check-new-slots: Process exited with code ${code}`);
+        reject(new Error(`Process exited with code ${code}`));
+      }
+      
+      isRunning = false;
+    });
+
+    phpProcess.on('error', (error) => {
+      const endTime = new Date().toISOString();
+      console.error(`[${endTime}] Error running check-new-slots:`, error.message);
+      isRunning = false;
+      reject(error);
+    });
+  });
 }
 
 // Schedule the job to run every hour at minute 0
