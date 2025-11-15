@@ -26,6 +26,58 @@ Laravel Zero was created by [Nuno Maduro](https://github.com/nunomaduro) and [Ow
 
 ------
 
+## Node.js Cron Runner
+
+This project includes a Node.js wrapper that uses `node-cron` to automatically run `./tmr app:check-new-slots` every hour. The runner executes the command immediately on startup and then schedules it to run at the top of every hour.
+
+### Installation
+
+```bash
+cd node-runner
+npm install
+```
+
+### Running Locally
+
+```bash
+npm start
+```
+
+The cron job will run immediately on startup and then every hour at minute 0 (e.g., 1:00, 2:00, 3:00, etc.).
+
+### PM2 Deployment
+
+To deploy with PM2 for production use:
+
+```bash
+cd node-runner
+npm install
+pm2 start cron.js --name tmr-cron
+```
+
+To manage the PM2 process:
+
+```bash
+# View status
+pm2 status
+
+# View logs
+pm2 logs tmr-cron
+
+# Restart
+pm2 restart tmr-cron
+
+# Stop
+pm2 stop tmr-cron
+
+# Delete
+pm2 delete tmr-cron
+```
+
+To change the schedule frequency, edit the cron expression in `node-runner/cron.js` (currently set to `'0 * * * *'` for hourly execution).
+
+------
+
 ## Documentation
 
 For full documentation, visit [laravel-zero.com](https://laravel-zero.com/).

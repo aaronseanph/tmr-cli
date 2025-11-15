@@ -1,0 +1,17 @@
+{
+  "name": "tmr-cron-runner",
+  "version": "1.0.0",
+  "description": "Node.js cron wrapper for tmr CLI command",
+  "main": "cron.js",
+  "scripts": {
+    "start": "node cron.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "execa": "^8.0.1",
+    "node-cron": "^3.0.3"
+  }
+}
+
